@@ -72,7 +72,7 @@ def find_identical_files(directory_path, hash_method='sha256'):
 
 
 
-```markdown
+
 - **Methodology**: This function scans the specified directory and its subdirectories to find identical files based on their hash values. It uses `pathlib` to list all files and compares each file to every other file to identify duplicates.
 - **Goals Met**:
   - **Demonstrate all identical files in a directory and subdirectories**: Uses `Path.rglob('*')` to recursively find all files.
