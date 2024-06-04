@@ -150,4 +150,3 @@ print(f"The hash method for digest {test_digest} is likely: {infer_hash_method(t
 ## Conclusion
 
 This script effectively identifies identical files in a directory by comparing their hash digests. It is versatile, allowing for different hash methods, and demonstrates key forensic techniques for ensuring data integrity. The enhancements provide additional functionality to list available hash methods and infer hash methods based on digest length.
-```
