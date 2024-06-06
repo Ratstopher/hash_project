@@ -1,31 +1,18 @@
+### Simplified Explanation of the Command-Line Script
 
-### Slide Deck for the Command-Line Toolkit
+#### Overview
 
----
+This script is a basic toolkit that provides two main categories of tools:
+1. **Forensic Tools**: For comparing files and finding identical files.
+2. **Network Tools**: For scanning network ports.
 
-#### Slide 1: Title Slide
+Users interact with the toolkit through a simple text-based menu system. The script repeatedly shows menus and executes the user's chosen actions until the user decides to exit.
 
-**Title: Assembling into a Toolkit**
+### Main Parts of the Script
 
----
+#### Main Menu
 
-#### Slide 2: Introduction
-
-**Assembling into a Toolkit**
-
-The first step in assembling a command-line menu-based toolkit is creating a simple text-based menu system. Users navigate using their keyboard, and Python print statements show options and input functions capture user selections.
-
-Advantages:
-- Simplicity: Easy to develop, no graphical interface needed.
-- Speed: Faster to create and run.
-- Portability: Can be run on any system with a terminal.
-- Resource Efficiency: Consumes fewer resources.
-
----
-
-#### Slide 3: Main Menu Example
-
-**Main Menu Example**
+This is the starting point of the toolkit. It shows the main options and lets the user choose what they want to do.
 
 ```python
 def main_menu():
@@ -46,11 +33,13 @@ def main_menu():
             print("Invalid choice. Please try again.")
 ```
 
----
+- **Menu Display**: Shows three options: Forensic Tools, Network Tools, and Exit.
+- **User Input**: Waits for the user to enter their choice.
+- **Action**: Calls the appropriate submenu based on the user's choice or exits the program if '3' is chosen.
 
-#### Slide 4: Forensic Tools Menu Example
+#### Forensic Tools Menu
 
-**Forensic Tools Menu Example**
+This submenu provides two tools: comparing two files using hash and finding identical files in a directory.
 
 ```python
 def forensic_tools_menu():
@@ -70,11 +59,13 @@ def forensic_tools_menu():
             print("Invalid choice. Please try again.")
 ```
 
----
+- **Menu Display**: Shows three options: Compare Two Files Using Hash, Find Identical Files in Directory, and Return to Main Menu.
+- **User Input**: Waits for the user to enter their choice.
+- **Action**: Calls the appropriate function based on the user's choice or returns to the main menu if '3' is chosen.
 
-#### Slide 5: Network Tools Menu Example
+#### Network Tools Menu
 
-**Network Tools Menu Example**
+This submenu provides a tool for scanning network ports using Nmap.
 
 ```python
 def network_tools_menu():
@@ -91,11 +82,15 @@ def network_tools_menu():
             print("Invalid choice. Please try again.")
 ```
 
----
+- **Menu Display**: Shows two options: Port Scan Using Nmap and Return to Main Menu.
+- **User Input**: Waits for the user to enter their choice.
+- **Action**: Calls the port scanning function based on the user's choice or returns to the main menu if '2' is chosen.
 
-#### Slide 6: File Hashing Example
+### Forensic Tools Functions
 
-**File Hashing Example**
+#### Compare Two Files Using Hash
+
+This function compares the hash values of two files to check if they are identical.
 
 ```python
 def compare_two_files():
@@ -107,10 +102,58 @@ def compare_two_files():
         print("The files are not identical")
 ```
 
+- **User Input**: Prompts the user to enter the paths of two files.
+- **Action**: Calls `compare_files` to check if the files are identical and prints the result.
+
+#### Find Identical Files in Directory
+
+This function finds and displays groups of identical files in a directory.
+
+```python
+def find_identical_files():
+    directory = input("Enter the path for the directory: ")
+    identical_files = find_identical_files_in_directory(directory)
+    display_identical_files(identical_files)
+```
+
+- **User Input**: Prompts the user to enter the path of a directory.
+- **Action**: Calls `find_identical_files_in_directory` to find identical files and `display_identical_files` to print the results.
+
+### Network Tools Function
+
+#### Port Scan Using Nmap
+
+This function scans a specified range of ports on a given IP address using Nmap.
+
+```python
+def port_scan_nmap():
+    ip = input("Enter IP address to scan: ")
+    port_range = input("Enter port range to scan (e.g., 1-1024): ")
+    result = nmap_port_scan(ip, port_range)
+    print("Port Scan Result:", result)
+```
+
+- **User Input**: Prompts the user to enter an IP address and a port range.
+- **Action**: Calls `nmap_port_scan` to perform the port scan and prints the results.
+
+### Utility Functions
+
+#### Compare Files
+
+Compares the hash values of two files.
+
 ```python
 def compare_files(file1, file2, hash_method='sha256'):
     return get_file_digest(file1, hash_method) == get_file_digest(file2, hash_method)
+```
 
+- **Action**: Returns `True` if the files are identical, `False` otherwise.
+
+#### Get File Digest
+
+Calculates the hash value of a file.
+
+```python
 def get_file_digest(file_path, hash_method='sha256'):
     hash_func = hashlib.new(hash_method)
     try:
@@ -123,18 +166,13 @@ def get_file_digest(file_path, hash_method='sha256'):
     return hash_func.hexdigest()
 ```
 
----
+- **Action**: Returns the hash value of the file.
 
-#### Slide 7: Finding Identical Files Example
+#### Find Identical Files in Directory
 
-**Finding Identical Files Example**
+Finds groups of identical files in a directory using hash values.
 
 ```python
-def find_identical_files():
-    directory = input("Enter the path for the directory: ")
-    identical_files = find_identical_files_in_directory(directory)
-    display_identical_files(identical_files)
-
 def find_identical_files_in_directory(directory_path, hash_method='sha256'):
     file_paths = [str(p) for p in Path(directory_path).rglob('*') if p.is_file()]
     checked_files = set()
@@ -153,7 +191,15 @@ def find_identical_files_in_directory(directory_path, hash_method='sha256'):
             checked_files.add(file1)
 
     return identical_files
+```
 
+- **Action**: Returns a list of groups of identical files.
+
+#### Display Identical Files
+
+Prints the groups of identical files.
+
+```python
 def display_identical_files(identical_files):
     for group in identical_files:
         print("Identical files group:")
@@ -162,23 +208,86 @@ def display_identical_files(identical_files):
         print()
 ```
 
----
+- **Action**: Prints the paths of identical files.
 
-#### Slide 8: Port Scanning Example
+#### Nmap Port Scan
 
-**Port Scanning Example**
+Performs a port scan using Nmap and returns the results.
 
 ```python
-def port_scan_nmap():
-    ip = input("Enter IP address to scan: ")
-    port_range = input("Enter port range to scan (e.g., 1-1024): ")
-    result = nmap_port_scan(ip, port_range)
-    print("Port Scan Result:", result)
-
 def nmap_port_scan(ip, port_range):
     nm = nmap.PortScanner()
     nm.scan(ip, port_range)
     result = {}
     for proto in nm[ip].all_protocols():
         lport = nm[ip][proto].keys()
-       
+        for port in lport:
+            result[port] = nm[ip][proto][port]['state']
+    return result
+```
+
+- **Action**: Returns a dictionary of port states.
+
+### Final Script Execution
+
+Starts the main menu.
+
+```python
+if __name__ == "__main__":
+    main_menu()
+```
+
+- **Action**: Runs the `main_menu` function, starting the toolkit.
+
+### Slide Content for Each Section
+
+---
+
+#### Slide: Forensic Tools Menu Breakdown
+
+**Forensic Tools Menu**
+
+This menu provides access to various forensic tools within the toolkit. It allows users to compare files using hash functions or find identical files in a directory. The menu loops until the user chooses to return to the main menu.
+
+**Code Example:**
+
+```python
+def forensic_tools_menu():
+    while True:
+        print("\nForensic Tools Menu:")
+        print("1. Compare Two Files Using Hash")
+        print("2. Find Identical Files in Directory")
+        print("3. Return to Main Menu")
+        choice = input("Enter your choice: ")
+        if choice == '1':
+            compare_two_files()
+        elif choice == '2':
+            find_identical_files()
+        elif choice == '3':
+            break
+        else:
+            print("Invalid choice. Please try again.")
+```
+
+**Detailed Explanation:**
+
+1. **Function Definition**: The function is defined using `def forensic_tools_menu():`.
+2. **Infinite Loop**: The `while True:` statement creates an infinite loop to keep the menu active.
+3. **Menu Display**:
+   - The menu title and options are printed using `print()` statements.
+   - Users can see three options: "Compare Two Files Using Hash", "Find Identical Files in Directory", and "Return to Main Menu".
+4. **User Input**: The `choice = input("Enter your choice: ")` statement waits for the user to input their choice.
+5. **Condition Checking**:
+   - **Option
+
+ 1**: If the user inputs '1', the `compare_two_files()` function is called.
+   - **Option 2**: If the user inputs '2', the `find_identical_files()` function is called.
+   - **Option 3**: If the user inputs '3', the `break` statement exits the loop, returning to the main menu.
+   - **Invalid Input**: If the input is not '1', '2', or '3', the `else` clause prints an error message and the loop continues, re-displaying the menu.
+
+**Key Points:**
+- **Interactive Menu**: Users can interactively choose forensic tools.
+- **Loop Control**: The infinite loop ensures the menu reappears after each action, providing continuous interaction.
+- **Function Calls**: Depending on the user's choice, the corresponding function is called to perform the selected task.
+- **Error Handling**: The `else` clause handles invalid inputs gracefully, prompting the user to try again.
+```
